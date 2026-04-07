@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Interactive Food Menu</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 30px;
+      background: #f9f9f9;
+    }
+    .step {
+      display: none;
+      margin-bottom: 20px;
+    }
+    .step.active {
+      display: block;
+    }
+    button {
+      margin-top: 10px;
+      padding: 8px 16px;
+      background: #0078d7;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #005a9e;
+    }
+    .summary {
+      background: #fff;
+      padding: 15px;
+      border: 1px solid #ccc;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Welcome to Our Guided Menu</h1>
+
+  <!-- Step 1: Greeting and food type -->
+  <div class="step active" id="step1">
+    <p>Hello! What type of food are you looking for?</p>
+    <select id="foodType1">
+      <option value="">-- Select --</option>
+      <option value="Vegan">Vegan</option>
+      <option value="Vegetarian">Vegetarian</option>
+      <option value="Non-Vegetarian">Non-Vegetarian</option>
+    </select>
+    <button onclick="nextStep(2)">Next</button>
+  </div>
+
+  <!-- Step 2: Cuisine -->
+  <div class="step" id="step2">
+    <p>Great! Please choose a cuisine category:</p>
+    <select id="cuisine">
+      <option value="">-- Select --</option>
+      <option value="Indian">Indian</option>
+      <option value="Thai">Thai</option>
+      <option value="Continental">Continental</option>
+      <option value="Nepalese">Nepalese</option>
+    </select>
+    <button onclick="nextStep(3)">Next</button>
+  </div>
+
+  <!-- Step 3: Confirm food type -->
+  <div class="step" id="step3">
+    <p>Please confirm your food type again:</p>
+    <select id="foodType2">
+      <option value="">-- Select --</option>
+      <option value="Vegan">Vegan</option>
+      <option value="Vegetarian">Vegetarian</option>
+      <option value="Non-Vegetarian">Non-Vegetarian</option>
+    </select>
+    <button onclick="nextStep(4)">Next</button>
+  </div>
+
+  <!-- Step 4: Customization -->
+  <div class="step" id="step4">
+    <p>Customize your preferences:</p>
+    <label>Flavor:
+      <select id="flavor">
+        <option value="Spicy">Spicy</option>
+        <option value="Sweet">Sweet</option>
+        <option value="Mild">Mild</option>
+        <option value="Tangy">Tangy</option>
+      </select>
+    </label><br><br>
+    <label><input type="checkbox" value="Less Oil"> Less Oil</label><br>
+    <label><input type="checkbox" value="Extra Spice"> Extra Spice</label><br>
+    <label><input type="checkbox" value="No Sugar"> No Sugar</label><br>
+    <label><input type="checkbox" value="Chef's Special"> Chef's Special</label><br>
+    <button onclick="nextStep(5)">Next</button>
+  </div>
+
+  <!-- Step 5: Suggested dishes -->
+  <div class="step" id="step5">
+    <p>Here are some dishes based on your choices:</p>
+    <ul id="dishList">
+      <li>Special Curry</li>
+      <li>Chef’s Recommended Dish</li>
+      <li>Seasonal Delight</li>
+    </ul>
+    <button onclick="nextStep(6)">Next</button>
+  </div>
+
+  <!-- Step 6: Order summary -->
+  <div class="step" id="step6">
+    <h2>Order Summary</h2>
+    <div class="summary" id="summary"></div>
+    <button onclick="nextStep(7)">Confirm Order</button>
+  </div>
+
+  <!-- Step 7: User details -->
+  <div class="step" id="step7">
+    <p>Please enter your details:</p>
+    <input type="text" id="name" placeholder="Name"><br><br>
+    <input type="text" id="contact" placeholder="Contact Info"><br><br>
+    <select id="delivery">
+      <option value="Delivery">Delivery</option>
+      <option value="Pickup">Pickup</option>
+    </select><br><br>
+    <button onclick="finishOrder()">Place Order</button>
+  </div>
+
+  <!-- Step 8: Confirmation -->
+  <div class="step" id="step8">
+    <h2>✅ Order Confirmed!</h2>
+    <p>Thank you! Your order has been placed and is being prepared.</p>
+  </div>
+
+  <script>
+    function nextStep(step) {
+      document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+      document.getElementById('step' + step).classList.add('active');
+
+      if (step === 6) {
+        const food1 = document.getElementById('foodType1').value;
+        const cuisine = document.getElementById('cuisine').value;
+        const food2 = document.getElementById('foodType2').value;
+        const flavor = document.getElementById('flavor').value;
+        const extras = Array.from(document.querySelectorAll('#step4 input[type=checkbox]:checked'))
+                            .map(cb => cb.value).join(', ');
+
+        document.getElementById('summary').innerHTML = `
+          <strong>Food Type:</strong> ${food1} / ${food2}<br>
+          <strong>Cuisine:</strong> ${cuisine}<br>
+          <strong>Flavor:</strong> ${flavor}<br>
+          <strong>Extras:</strong> ${extras || 'None'}<br>
+          <strong>Dishes:</strong> Special Curry, Chef’s Recommended Dish, Seasonal Delight
+        `;
+      }
+    }
+
+    function finishOrder() {
+      document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+      document.getElementById('step8').classList.add('active');
+    }
+  </script>
+
+</body>
+</html>
